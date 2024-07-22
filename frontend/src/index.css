@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root{
+    --primaryColor:564EDB;
+    --secondaryColor:322CA1
+}
+.flexCenter{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
