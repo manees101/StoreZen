@@ -21,7 +21,7 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }))
 app.use(cors({
-  origin:["http://localhost:5173","http://localhost:5174"],
+  origin:[process.env.CLIENT_URL],
   credentials:true
 }))
 app.use(morgan("tiny"))
@@ -33,6 +33,9 @@ cloudinary.v2.config(
     api_secret: process.env.CLOUDINARY_API_SECRET // Click 'View Credentials' below to copy your API secret
 }
 )
+app.get("/",(req,res)=>{
+  res.status(200).json({message:"Hello from server"})
+})
 app.use("/api/v1/user",userRouter)
 app.use("/api/v1/seller",sellerRouter)
 app.use("/api/v1/product",productRouter)
