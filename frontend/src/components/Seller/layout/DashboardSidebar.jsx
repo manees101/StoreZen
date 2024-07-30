@@ -8,8 +8,11 @@ import { CiMoneyBill, CiSettings } from "react-icons/ci";
 import { Link } from "react-router-dom";
 import { BiMessageSquareDetail } from "react-icons/bi";
 import { HiOutlineReceiptRefund } from "react-icons/hi";
+import { useSelector } from "react-redux";
 
 const DashboardSidebar = ({ active }) => {
+  const seller=useSelector(state=>state.seller)
+  console.log(seller)
   return (
     <div className="w-full bg-secondary h-full text-white shadow-sm overflow-y-scroll sticky top-0 left-0 z-10">
       {/* single item */}
@@ -161,7 +164,7 @@ const DashboardSidebar = ({ active }) => {
       </div>
 
       <div className="w-full flex items-center p-4">
-        <Link to="/dashboard/refunds" className={`w-[80%] flex items-center rounded-md p-1
+        <Link to="/dashboard/notifications" className={`w-[80%] flex items-center rounded-md p-1
         ${active === 10 ? "bg-primary" : ""}
         `}>
           <HiOutlineReceiptRefund
@@ -171,7 +174,7 @@ const DashboardSidebar = ({ active }) => {
           <h5
             className={`hidden md:block pl-2 text-[18px] font-[400]`}
           >
-            Refunds
+            Notifications
           </h5>
         </Link>
       </div>

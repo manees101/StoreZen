@@ -42,6 +42,9 @@ import {
 import {loadUser,loadSeller} from "./store/actions/user"
 import { useDispatch } from 'react-redux';
 import { getAllProducts } from './store/actions/product';
+import Dashboard from './components/Admin/Dashboard';
+import AdminDashboard from './pages/Admin/AdminDashboard';
+import SellerNotifications from './components/Seller/Notifications';
 function App() {
   const dispatch=useDispatch()
   useEffect(()=>{
@@ -86,7 +89,8 @@ function App() {
       <Route path='/forgot-password' element={<ForgotPassword/>}/>
       <Route path='/user/reset-password/:email' element={<ResetPassword/>} />
       <Route path='/inbox' element={<UserInbox/>}/>
-      <Route path='/admin' element={<h1>Admin</h1>}/>
+      <Route path='/admin' element={<AdminDashboard/>}/>
+      <Route path='/dashboard/notifications' element={<SellerNotifications/>}/>
       <Route path='/admin/products' element={<h1>Admin Products</h1>}/>
       <Route path='/admin/orders' element={<h1>Admin orders</h1>}/>
       <Route path='/admin/users' element={<h1>Admin users</h1>}/>

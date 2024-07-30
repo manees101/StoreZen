@@ -1,15 +1,12 @@
 import {
   AiFillHeart,
-  AiFillStar,
   AiOutlineEye,
   AiOutlineHeart,
   AiOutlineShoppingCart,
-  AiOutlineStar,
 } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "../../../styles/styles";
 import { useDispatch, useSelector } from "react-redux";
-// import ProductDetailsCard from "../ProductDetailsCard/ProductDetailsCard";
 import {
   addToWishlist,
   removeFromWishlist,

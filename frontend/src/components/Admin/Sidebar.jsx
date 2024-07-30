@@ -1,15 +1,18 @@
-import { AiOutlineMessage } from "react-icons/ai";
-import { RiLockPasswordLine } from "react-icons/ri";
+import { AiOutlineDashboard } from "react-icons/ai";
+import { RiUser3Line } from "react-icons/ri";
 import { HiOutlineShoppingBag } from "react-icons/hi";
-import { RxPerson } from "react-icons/rx";
+import { MdOutlineCategory   } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { FiLogOut } from "react-icons/fi";
 import axios from "axios";
 import { server } from "../../server";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
-const Sidebar = ({ active, setActive }) => {
+const AdminSidebar = ({ setActive, active }) => {
+  console.log("admin sidebar")
   const navigate = useNavigate();
+  const { user } = useSelector((state) => state.user);
   const logoutHandler = () => {
     axios
       .get(`${server}/user/logout`, { withCredentials: true })
@@ -30,42 +33,56 @@ const Sidebar = ({ active, setActive }) => {
         }`}
         onClick={() => setActive(1)}
       >
-        <RxPerson size={20} />
-        <span className={`pl-3  md:block hidden`}>Profile</span>
+        <AiOutlineDashboard size={20} />
+        <span className={`pl-3 md:block hidden`}>Dashboard</span>
       </div>
       <div
-        className={`flex items-center hover:bg-primary cursor-pointer w-full mb-6
-      p-2 rounded-md  ${active === 2 ? "bg-primary" : ""}
-      `}
+        className={`flex items-center hover:bg-primary cursor-pointer w-full mb-6 p-2 rounded-md  ${
+          active === 2 ? "bg-primary" : ""
+        }`}
         onClick={() => setActive(2)}
       >
-        <HiOutlineShoppingBag size={20} />
-        <span className={`pl-3  md:block hidden`}>Users</span>
+        <RiUser3Line size={20} />
+        <span className={`pl-3 md:block hidden`}>Users</span>
       </div>
-
       <div
-        className={`flex items-center hover:bg-primary cursor-pointer w-full mb-6
-      p-2 rounded-md  ${active === 3 ? "bg-primary" : ""}
-      `}
-        onClick={() => setActive(3) || navigate("/inbox")}
+        className={`flex items-center hover:bg-primary cursor-pointer w-full mb-6 p-2 rounded-md  ${
+          active === 3 ? "bg-primary" : ""
+        }`}
+        onClick={() => setActive(3)}
       >
-        <AiOutlineMessage size={20} />
-        <span className={`pl-3  md:block hidden`}>Products</span>
+        <HiOutlineShoppingBag size={20} />
+        <span className={`pl-3 md:block hidden`}>Orders</span>
       </div>
-
       <div
-        className={`flex items-center hover:bg-primary cursor-pointer w-full mb-6
-      p-2 rounded-md  ${active === 4 ? "bg-primary" : ""}
-      `}
+        className={`flex items-center hover:bg-primary cursor-pointer w-full mb-6 p-2 rounded-md  ${
+          active === 4 ? "bg-primary" : ""
+        }`}
         onClick={() => setActive(4)}
       >
-        <RiLockPasswordLine size={20} />
-        <span className={`pl-3 md:block hidden`}>Change Password</span>
+        <MdOutlineCategory size={20} />
+        <span className={`pl-3 md:block hidden`}>Products</span>
+      </div>
+      {/* <div
+        className={`flex items-center hover:bg-primary cursor-pointer w-full mb-6 p-2 rounded-md  ${
+          active === 5 ? "bg-primary" : ""
+        }`}
+        onClick={() => setActive(5)}
+      >
+        <TbPackage size={20} />
+        <span className={`pl-3 md:block hidden`}>Categories</span>
       </div>
       <div
-        className={`single_item flex items-center hover:bg-primary cursor-pointer w-full mb-6
-      p-2 rounded-md
-      `}
+        className={`flex items-center hover:bg-primary cursor-pointer w-full mb-6 p-2 rounded-md  ${
+          active === 6 ? "bg-primary" : ""
+        }`}
+        onClick={() => setActive(6)}
+      >
+        <MdOutlineReport size={20} />
+        <span className={`pl-3 md:block hidden`}>Reports</span>
+      </div> */}
+      <div
+        className={`single_item flex items-center hover:bg-primary cursor-pointer w-full mb-6 p-2 rounded-md`}
         onClick={logoutHandler}
       >
         <FiLogOut size={20} />
@@ -75,4 +92,4 @@ const Sidebar = ({ active, setActive }) => {
   );
 };
 
-export default Sidebar;
+export default AdminSidebar;

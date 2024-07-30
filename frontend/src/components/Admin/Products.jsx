@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-const AllProducts = () => {
+const Products = () => {
     
     const allProducts=useSelector(state=>state.products)
     console.log(allProducts)
@@ -10,4 +10,4 @@ const AllProducts = () => {
   )
 }
 
-export default AllProducts
+export default Products

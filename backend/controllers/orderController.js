@@ -99,7 +99,18 @@ export const getAllOrdersOfSeller=async(req,res,next)=>{
         return next(new ErrorHandler(error.message, 500));
       }
 }
-
+//get users count
+export const orderCount=async(req,res,next)=>{
+  try
+  {
+    const count=await Order.countDocuments();
+    res.status(200).json(count)
+  }
+  catch(err)
+  {
+    return next(new ErrorHandler(err.message,500))
+  }
+}
 // update order status
 export const updateOrderStatus=async(req,res,next)=>{
     try {

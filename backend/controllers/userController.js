@@ -18,6 +18,18 @@ export const getUser = async (req, res, next) => {
     return next(new ErrorHandler(err.message, 500));
   }
 };
+//get users count
+export const userCount=async(req,res,next)=>{
+  try
+  {
+    const count=await User.countDocuments();
+    res.status(200).json(count)
+  }
+  catch(err)
+  {
+    return next(new ErrorHandler(err.message,500))
+  }
+}
 // update user
 export const updateUser = async (req, res, next) => {
   try {
@@ -167,19 +179,23 @@ export const updateAvatar = async (req, res, next) => {
   }
 };
 //delete user
-export const deleteUser = async (req, res, next) => {
+export const 
+deleteUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.userId);
     if (!user) {
       return next(new ErrorHandler("User does not exists with this id", 404));
     }
-    const imageId = user.avatar.public_id;
+    if(user.avatar.public_id)
+    {
+      const imageId = user.avatar.public_id;
 
-    await cloudinary.v2.uploader.destroy(imageId);
-
+      await cloudinary.v2.uploader.destroy(imageId);
+    }
+    
     await User.findByIdAndDelete(req.params.id);
 
-    res.status(201).json({
+    res.status(200).json({
       success: true,
       message: "User deleted successfully!",
     });

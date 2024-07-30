@@ -17,6 +17,60 @@ export const getSeller=async(req,res,next)=>{
         return next(new ErrorHandler(error.message, 500));
       }
 }
+//get All sellers
+export const getAllSellers = async (req, res, next) => {
+  try {
+    const sellers = await Seller.find().sort({
+      createdAt: -1,
+    });
+    res.status(200).json({
+      success: true,
+      sellers,
+    });
+  } catch (err) {
+    return next(new ErrorHandler(err.message, 500));
+  }
+};
+
+//delete seller
+export const deleteSeller=async(req,res,next)=>{
+  try
+  {
+    const seller = await Seller.findById(req.params.userId);
+    if (!seller) {
+      return next(new ErrorHandler("User does not exists with this id", 404));
+    }
+    if(seller.avatar.public_id)
+    {
+      const imageId = seller.avatar.public_id;
+
+      await cloudinary.v2.uploader.destroy(imageId);
+    }
+    
+    await Seller.findByIdAndDelete(req.params.id);
+
+    res.status(200).json({
+      success: true,
+      message: "User deleted successfully!",
+    });
+  }
+  catch(err)
+  {
+    return next(new ErrorHandler(err.message))
+  }
+}
+//get sellers count
+export const sellerCount=async(req,res,next)=>{
+  try
+  {
+    const count=await Seller.countDocuments();
+    res.status(200).json(count)
+  }
+  catch(err)
+  {
+    return next(new ErrorHandler(err.message,500))
+  }
+}
 //get seller info  - Admin
 export const shopInfo=async(req,res,next)=>{
     try {

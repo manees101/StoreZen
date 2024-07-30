@@ -1,3 +1,4 @@
+import Order from "../models/order.js";
 import Product from "../models/product.js"
 import ErrorHandler from "../utils/ErrorHandler.js"
 
@@ -66,7 +67,105 @@ export const getAllProducts = async (req, res) => {
   const count=await Product.countDocuments()
   res.status(200).json({ products, count });
 };
+// Function to fetch product sales data
+const getProductSalesData = async (productId) => {
+  try {
+    const result = await Order.aggregate([
+      { $unwind: "$cart" },
+      { $match: { "cart._id": mongoose.Types.ObjectId(productId) } },
+      { $group: { _id: null, totalSales: { $sum: "$cart.quantity" } } }
+    ]);
 
+    const totalSales = result.length > 0 ? result[0].totalSales : 0;
+    return totalSales;
+  } catch (error) {
+    console.error(`Error fetching sales data for product ${productId}:`, error);
+    throw error;
+  }
+};
+
+
+// Controller function to fetch products and analyze sales
+export const fetchProductsAndAnalyzeSales = async (req, res) => {
+  try {
+    const products = await Product.find({});
+
+    const notifications = await Promise.all(products.map(async (product) => {
+      const totalSales = await getProductSalesData(product._id);
+      const systemContent ="i have given product id and its sales "
+
+      const response = await axios.post(aiModelApiUrl, {
+        productId: product._id,
+        totalSales
+      });
+
+      const prediction = response.data.prediction;
+
+      return {
+        id: product._id,
+        message: `The future demand for product ${product.title} is predicted to be ${prediction}.`,
+        type: 'demand',
+        productId: product._id,
+        date: new Date().toISOString()
+      };
+    }));
+
+    // Send notifications to the sellers
+    // Assuming you have a function to send notifications
+    notifications.forEach(notification => {
+      sendNotificationToSeller(notification);
+    });
+
+    res.status(200).json({
+      success: true,
+      notifications
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+// Mock function to send notification to the seller
+const sendNotificationToSeller = (notification) => {
+  // Implement your notification logic here
+  console.log('Notification sent to seller:', notification);
+};
+
+//get product inventory notifications
+export const getInventoryNotifications = async (req, res) => {
+  try {
+    // Fetch products whose stock is equal to the threshold
+    const products = await Product.find({ stock: { $lte: threshold } });
+
+    // Format the notifications
+    const notifications = products.map((product) => ({
+      id: product._id,
+      message: `Product ${product.title} has reached its stock threshold.`,
+      type: "inventory",
+      productId: product._id,
+      date: new Date().toISOString(),
+    }));
+
+    res.status(200).json({ notifications });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+//get products count
+export const productCount=async(req,res,next)=>{
+  try
+  {
+    const count=await Product.countDocuments();
+    res.status(200).json(count)
+  }
+  catch(err)
+  {
+    return next(new ErrorHandler(err.message,500))
+  }
+}
 //create product
 export const createProduct=async(req,res,next)=>{
     try

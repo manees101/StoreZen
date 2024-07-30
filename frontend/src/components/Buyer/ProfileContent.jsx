@@ -60,6 +60,9 @@ const ProfileContent = ({ active }) => {
             { avatar: reader.result },
             {
               withCredentials: true,
+              headers: {
+                "Access-Control-Allow-Credentials": true,
+              },
             }
           )
           .then((response) => {

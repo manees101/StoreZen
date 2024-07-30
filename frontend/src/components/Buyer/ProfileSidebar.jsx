@@ -18,7 +18,6 @@ import { useSelector } from "react-redux";
 const ProfileSidebar = ({ setActive, active }) => {
   const navigate = useNavigate();
  const {user} = useSelector((state) => state.user);
- console.log(user)
   const logoutHandler = () => {
     axios
       .get(`${server}/user/logout`, { withCredentials: true })
@@ -94,7 +93,7 @@ const ProfileSidebar = ({ setActive, active }) => {
         </span>
       </div>
 
-      <div
+      {/* <div
         className={`flex items-center hover:bg-primary cursor-pointer w-full mb-6
         p-2 rounded-md  ${
             active === 5 ? "bg-primary" : ""
@@ -108,7 +107,7 @@ const ProfileSidebar = ({ setActive, active }) => {
         >
           Track Order
         </span>
-      </div>
+      </div> */}
 
       <div
         className={`flex items-center hover:bg-primary cursor-pointer w-full mb-6
@@ -143,10 +142,10 @@ const ProfileSidebar = ({ setActive, active }) => {
       </div>
 
       {user && user?.role === "Admin" && (
-        <Link to="/admin/dashboard">
+        <Link to="/admin">
           <div
-            className={`flex items-center hover:bg-primary cursor-pointer w-full mb-6
-            
+            className={`single_item flex items-center hover:bg-primary cursor-pointer w-full mb-6
+        p-2 rounded-md
             `}
             onClick={() => setActive(8)}
           >

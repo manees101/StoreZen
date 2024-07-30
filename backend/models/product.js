@@ -58,6 +58,11 @@ const productSchema=new mongoose.Schema({
         type: Date,
         default: Date.now(),
       },
+      threshold:{
+        type:Number,
+        required:true,
+        default:10
+      }
 })
 // Pre-save middleware to calculate the average rating
 productSchema.pre('save', function (next) {
